@@ -1,13 +1,11 @@
 package sia.taco_cloud;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.CreditCardNumber;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,13 +13,15 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-@Table // Не обязательный, но имя таблицы будет taco_order. Если нужно иначе @Table("taco_Cloud_name)
+@Entity
+// @Table // Не обязательный, но имя таблицы будет taco_order. Если нужно иначе @Table("taco_Cloud_name)
 public class TacoOrder implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column("id") // не обязательный, если устраивает имя по умолчанию. К примеру для поля deliveryName поле в таблице будет delivery_name
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    // @Column("id") // не обязательный, если устраивает имя по умолчанию. К примеру для поля deliveryName поле в таблице будет delivery_name
     private long id;
 
     private Date placedAt = new Date();
@@ -51,6 +51,7 @@ public class TacoOrder implements Serializable {
     @Digits(integer=3, fraction=0, message="Invalid CVV")
     private String ccCVV;
 
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Taco> tacos = new ArrayList<>();
 
     public void addTaco(Taco taco) {
