@@ -20,11 +20,13 @@ public class TacoOrder implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    // @Column("id") // не обязательный, если устраивает имя по умолчанию. К примеру для поля deliveryName поле в таблице будет delivery_name
-    private long id;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long id;
 
-    private Date placedAt = new Date();
+    private Date placedAt;
+
+    @ManyToOne
+    private User user;
 
     @NotBlank(message="Delivery name is required")
     private String deliveryName;
@@ -51,10 +53,17 @@ public class TacoOrder implements Serializable {
     @Digits(integer=3, fraction=0, message="Invalid CVV")
     private String ccCVV;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity=Taco.class)
     private List<Taco> tacos = new ArrayList<>();
 
-    public void addTaco(Taco taco) {
-        this.tacos.add(taco);
+    public void addTaco(Taco design) {
+        this.tacos.add(design);
     }
+
+    @PrePersist
+    void placedAt() {
+        this.placedAt = new Date();
+    }
+
+
 }

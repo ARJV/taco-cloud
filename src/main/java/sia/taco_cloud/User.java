@@ -17,7 +17,7 @@ import java.util.Collection;
 
 @Entity
 @Data
-@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
+@NoArgsConstructor(access=AccessLevel.PRIVATE, force=true)
 @RequiredArgsConstructor
 // Кастомный USER реализующий интерфейс UserDetails. 2 метода реализует Lombok (геттеры)
 public class User implements UserDetails {
@@ -25,12 +25,12 @@ public class User implements UserDetails {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     private final String username;
     private final String password;
-    private final String fullName;
+    private final String fullname;
     private final String street;
     private final String city;
     private final String state;
@@ -61,4 +61,6 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+
 }
